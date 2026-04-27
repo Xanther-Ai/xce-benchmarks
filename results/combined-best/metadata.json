@@ -1,0 +1,16 @@
+{
+  "name": "combined-best",
+  "model": "XCE v4 Multi-Model (Sonnet 4.0 + 4.5 + Gemini 3.1)",
+  "description": "Best patch per instance. 384/500 = 76.8%.",
+  "dataset": "princeton-nlp/SWE-bench_Verified",
+  "split": "test",
+  "total_instances": 500,
+  "submitted_instances": 497,
+  "resolved_instances": 384,
+  "resolve_rate": "76.8%",
+  "cost_per_instance_usd": 0.55,
+  "instances_run": 720,
+  "estimated_total_cost_usd": 396.0,
+  "cost_per_resolved_usd": 1.03,
+  "created": "2026-04-16T00:36:30.969823"
+}

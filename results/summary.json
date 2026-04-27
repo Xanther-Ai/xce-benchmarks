@@ -1,0 +1,72 @@
+{
+  "benchmark": "SWE-bench Verified",
+  "total_instances": 500,
+  "agent": "mini-swe-agent",
+  "context_engine": "Xanther Context Engine (XCE)",
+  "date": "2026-04",
+  "runs": [
+    {
+      "name": "sonnet40-xce",
+      "model": "claude-sonnet-4-20250514",
+      "xce_enabled": true,
+      "resolve_rate": 0.734,
+      "resolved": 367,
+      "total": 500,
+      "cost_per_instance": 0.22
+    },
+    {
+      "name": "sonnet40-xce-cascade",
+      "model": "claude-sonnet-4-20250514 (cascade hybrid)",
+      "xce_enabled": true,
+      "resolve_rate": 0.768,
+      "resolved": 384,
+      "total": 500,
+      "cost_per_instance": null
+    },
+    {
+      "name": "sonnet45-xce",
+      "model": "claude-sonnet-4.5-20250514",
+      "xce_enabled": true,
+      "resolve_rate": 0.72,
+      "resolved": 360,
+      "total": 500,
+      "cost_per_instance": null
+    },
+    {
+      "name": "minimax-m25-xce",
+      "model": "minimax-m2.5",
+      "xce_enabled": true,
+      "resolve_rate": 0.782,
+      "resolved": 391,
+      "total": 500,
+      "cost_per_instance": 0.22
+    },
+    {
+      "name": "minimax-m25-high-reasoning",
+      "model": "minimax-m2.5 (high reasoning)",
+      "xce_enabled": true,
+      "resolve_rate": 0.782,
+      "resolved": 391,
+      "total": 500,
+      "cost_per_instance": null
+    }
+  ],
+  "baselines": [
+    {
+      "name": "sonnet40-baseline",
+      "model": "claude-sonnet-4-20250514",
+      "xce_enabled": false,
+      "resolve_rate": 0.66,
+      "resolved": 330,
+      "total": 500
+    },
+    {
+      "name": "minimax-m25-baseline",
+      "model": "minimax-m2.5",
+      "xce_enabled": false,
+      "resolve_rate": 0.758,
+      "resolved": 379,
+      "total": 500
+    }
+  ]
+}

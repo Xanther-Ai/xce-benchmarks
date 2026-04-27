@@ -1,0 +1,16 @@
+{
+  "name": "sonnet40-xce",
+  "model": "claude-sonnet-4-20250514 + XCE v4",
+  "description": "Claude Sonnet 4.0 with XCE v4 Graph RAG. 367/500.",
+  "dataset": "princeton-nlp/SWE-bench_Verified",
+  "split": "test",
+  "total_instances": 500,
+  "submitted_instances": 497,
+  "resolved_instances": 367,
+  "resolve_rate": "73.4%",
+  "cost_per_instance_usd": 0.65,
+  "instances_run": 500,
+  "estimated_total_cost_usd": 325.0,
+  "cost_per_resolved_usd": 0.89,
+  "created": "2026-04-16T00:36:30.755305"
+}

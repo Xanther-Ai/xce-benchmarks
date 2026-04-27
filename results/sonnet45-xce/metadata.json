@@ -1,0 +1,16 @@
+{
+  "name": "sonnet45-xce",
+  "model": "claude-sonnet-4.5 + XCE v4",
+  "description": "Claude Sonnet 4.5 retries on failed instances.",
+  "dataset": "princeton-nlp/SWE-bench_Verified",
+  "split": "test",
+  "total_instances": 500,
+  "submitted_instances": 497,
+  "resolved_instances": 11,
+  "resolve_rate": "2.2%",
+  "cost_per_instance_usd": 1.2,
+  "instances_run": 100,
+  "estimated_total_cost_usd": 120.0,
+  "cost_per_resolved_usd": 10.91,
+  "created": "2026-04-16T00:36:30.828316"
+}
