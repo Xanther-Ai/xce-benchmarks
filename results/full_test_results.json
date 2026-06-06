@@ -1,0 +1,10 @@
+{
+  "test_summary": {
+    "total_issues": 50,
+    "total_tests_needed": 150,
+    "engines": ["Xanther (XCE)", "Auggie", "Serena"]
+  },
+  "xce_results": [],
+  "auggie_results": [],
+  "serena_results": []
+}
