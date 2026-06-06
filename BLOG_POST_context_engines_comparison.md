@@ -2,6 +2,17 @@
 
 ## A Data-Driven Comparison of XCE, Augment Code, and Serena on Django's 200K-Line Codebase
 
+**📊 Full benchmark data, visualizations, and scripts available on GitHub:**  
+**→ [github.com/Xanther-Ai/xce-benchmarks](https://github.com/Xanther-Ai/xce-benchmarks)**
+
+**📁 Repository contents:**
+- Complete blog post + detailed analysis
+- 35+ SWE-bench issue results with scoring
+- 10 complex feature design traces
+- Machine-readable JSON results (`results/full_test_results.json`)
+- 8 high-quality visualizations (S3 CDN hosted)
+- Python scripts for reproducibility
+
 ---
 
 ## Background: The Context Problem in AI-Assisted Development
@@ -47,6 +58,49 @@ I hypothesized that:
 3. An LSP-based engine (Serena) would win on speed but lose on depth
 
 The data confirmed all three hypotheses—but with an unexpected twist on the complexity curve.
+
+---
+
+## Executive Summary: Comparative Metrics
+
+Before diving into the full analysis, here's what the data shows:
+
+### Overall Performance Comparison
+
+| Engine | SWE-bench Avg | Features Avg | Overall | Wins |
+|--------|--------------|--------------|---------|------|
+| **XCE** | 10.5/12 (87.5%) | 10.3/12 (85.8%) | **10.4/12 (86.7%)** | 7/10 features |
+| Auggie | 10.5/12 (87.5%) | 9.7/12 (80.8%) | 10.1/12 (84.2%) | 3/10 features |
+| Serena | 11.0/12 (91.7%) | 6.4/12 (53.3%) | 8.7/12 (72.5%) | 0/10 features |
+
+**Key Finding**: XCE wins overall, but the story is nuanced. Serena scores high on SWE-bench (because it always finds the exact location—3/3 on code location), but fails on architectural understanding. Auggie struggles on standard problems but catches up on novel ones.
+
+### Response Time & Context Richness
+
+| Metric | XCE | Auggie | Serena |
+|--------|-----|--------|--------|
+| Response Time | ~2s | ~3s | ~1s |
+| Tokens/Query | ~2000+ | ~1500 | ~500 |
+| Tokens/Second | ~1000 | ~500 | ~500 |
+| Best For | Architecture | Novel design | Speed |
+
+### The Complexity Crossover (Most Important Finding)
+
+```
+Standard Complexity (Features 1-6): XCE wins
+  XCE:    11.0/12 avg  ████████████
+  Auggie:  9.8/12 avg  ██████████
+  Serena:  6.2/12 avg  ███████
+
+Novel Complexity (Features 7-10): Auggie wins ⭐
+  XCE:    8.3/12 avg   █████████
+  Auggie:  9.3/12 avg  ██████████
+  Serena:  N/A
+```
+
+This suggests a phase transition: on problems where the solution exists in Django's current architecture, XCE's graph-based approach dominates. On problems requiring novel patterns not in Django, Auggie's embedding-based semantic synthesis takes the lead.
+
+**See also**: [Full benchmark repository](https://github.com/Xanther-Ai/xce-benchmarks) with detailed metrics, traces, and reproducible scripts.
 
 ---
 
@@ -208,6 +262,8 @@ The ~1 second difference comes primarily from Auggie's LLM synthesis step. XCE's
 
 ## Scoring Methodology: LLM-as-Judge with Structured Rubric
 
+**📖 Full methodology**: [BLOG_POST](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/BLOG_POST_context_engines_comparison.md#scoring-methodology-llm-as-judge-with-structured-rubric) on GitHub
+
 This section explains exactly how I scored each engine's responses. I used an **LLM-as-Judge** approach with a structured rubric to ensure consistency and reproducibility.
 
 ### The Rubric (12 Points Maximum)
@@ -307,6 +363,8 @@ Auggie was run via CLI: `auggie --mcp --mcp-auto-workspace`
 
 ## Results: SWE-bench Verified Bug Fixes (35+ Issues)
 
+**📊 See full data**: [results/full_test_results.json](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/results/full_test_results.json) · [SWE_BENCH_RESULTS.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/SWE_BENCH_RESULTS.md) on GitHub
+
 ### Aggregate Scores
 
 | Engine | Issues Tested | Avg Score | Median | Std Dev | Success Rate (≥10/12) |
@@ -344,6 +402,8 @@ During testing, XCE helped me identify a bug that's still present in Django main
 ---
 
 ## Results: Complex Architectural Features (10 Features)
+
+**📊 See full data**: [complex_feature_test_results.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/complex_feature_test_results.md) · [10_complex_features.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/10_complex_features.md) on GitHub
 
 This is where the comparison gets interesting. These aren't bug fixes—they're feature design tasks requiring multi-module architectural understanding.
 
@@ -463,6 +523,12 @@ The crossover point is approximately at the boundary between "extending existing
 ---
 
 ## Conclusion
+
+**📊 Access full benchmark repository**: [github.com/Xanther-Ai/xce-benchmarks](https://github.com/Xanther-Ai/xce-benchmarks)
+- Machine-readable results: [results/full_test_results.json](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/results/full_test_results.json)
+- All visualizations: [assets/](https://github.com/Xanther-Ai/xce-benchmarks/tree/main/assets)
+- Reproducible scripts: [analysis/](https://github.com/Xanther-Ai/xce-benchmarks/tree/main/analysis)
+- Navigation guide: [INDEX.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/INDEX.md)
 
 ### Key Findings
 
@@ -953,6 +1019,113 @@ Below are the complete traces from each engine for every feature test. These sho
 | django__django-10097 | URLValidator username/password | Validators | 12/12 | 9/12 | 8/12 |
 
 *Note: "-" indicates engine was not tested on that specific issue. Full results for all 35+ issues available in `swe-bench-results/RESULTS.md`*
+
+---
+
+## Appendix D: Reproducibility & GitHub Repository
+
+**All benchmark data, scripts, and visualizations are publicly available:**
+
+### Repository Structure
+```
+https://github.com/Xanther-Ai/xce-benchmarks/
+├── BLOG_POST_context_engines_comparison.md    (this file)
+├── README_UPDATED.md                           (comprehensive guide)
+├── INDEX.md                                    (navigation by use case)
+├── results/
+│   ├── full_test_results.json                 (all scoring data)
+│   ├── problem_statements.json                (test specifications)
+│   ├── test-issues.json                       (35+ SWE-bench issues)
+│   └── all_django_issues.json                 (issue database)
+├── assets/
+│   ├── diagram_1_feature_results.png
+│   ├── diagram_2_complexity_curve.png
+│   ├── diagram_3_response_time.png
+│   ├── diagram_4_overall_scores.png
+│   ├── diagram_5_token_usage.png
+│   ├── diagram_6_architecture.png
+│   ├── diagram_7_when_to_use.png
+│   └── diagram_8_wins_summary.png
+├── analysis/
+│   ├── create_diagrams.py                     (regenerate visualizations)
+│   ├── generate_prompts.py                    (create test prompts)
+│   └── test_engine.py                         (testing framework)
+└── LICENSE
+```
+
+### Using This Data
+
+**For Researchers:**
+```bash
+# Download all results
+wget https://github.com/Xanther-Ai/xce-benchmarks/raw/main/results/full_test_results.json
+
+# Load and analyze
+python -c "
+import json
+with open('full_test_results.json') as f:
+    results = json.load(f)
+    print(f'Total tests: {len(results)}')
+    print(f'Avg score: {sum(r[\"total\"] for r in results) / len(results) / 12 * 100:.1f}%')
+"
+```
+
+**For Developers:**
+```bash
+# Clone the repository
+git clone https://github.com/Xanther-Ai/xce-benchmarks.git
+
+# View the decision matrix
+# See: assets/diagram_7_when_to_use.png
+# Or:  BLOG_POST_context_engines_comparison.md#practical-recommendations
+
+# Reference the rubric
+# See: BLOG_POST_context_engines_comparison.md#scoring-methodology
+```
+
+**For Tool Builders:**
+```bash
+# Study the scoring methodology
+# BLOG_POST_context_engines_comparison.md#appendix-c-scoring-rubric-details
+
+# Review test engine implementation
+# analysis/test_engine.py
+
+# Use JSON format as standard for your benchmarks
+```
+
+### Comparative Metrics at a Glance
+
+| Metric | XCE | Auggie | Serena | Source |
+|--------|-----|--------|--------|--------|
+| **Overall Score** | 10.4/12 | 10.1/12 | 8.7/12 | [full_test_results.json](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/results/full_test_results.json) |
+| **SWE-bench Score** | 10.5/12 | 10.5/12 | 11.0/12 | [SWE_BENCH_RESULTS.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/SWE_BENCH_RESULTS.md) |
+| **Features Score** | 10.3/12 | 9.7/12 | 6.4/12 | [complex_feature_test_results.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/complex_feature_test_results.md) |
+| **Response Time** | 2s | 3s | 1s | [README_UPDATED.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/README_UPDATED.md) |
+| **Tokens/Query** | 2000+ | 1500 | 500 | [README_UPDATED.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/README_UPDATED.md) |
+| **Features Won** | 7/10 | 3/10 | 0/10 | [complex_feature_test_results.md](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/complex_feature_test_results.md) |
+
+### The Complexity Crossover (Benchmark Insight)
+
+Full analysis with mathematical details available in:
+- GitHub: [README_UPDATED.md#the-complexity-crossover](https://github.com/Xanther-Ai/xce-benchmarks/blob/main/README_UPDATED.md)
+- Diagram: [diagram_2_complexity_curve.png](https://xce-swe-results-859092166013.s3.amazonaws.com/diagram_2_complexity_curve.png)
+
+### Citation
+
+If you build on this benchmark, please cite:
+
+```bibtex
+@benchmark{xce-benchmarks-2026,
+  title={Context Engine Comparison: XCE vs Auggie vs Serena on Django},
+  author={Bhattacharya, Raj},
+  year={2026},
+  repository={https://github.com/Xanther-Ai/xce-benchmarks},
+  note={35+ SWE-bench issues, 10 architectural features, 12-point rubric},
+  url={https://github.com/Xanther-Ai/xce-benchmarks},
+  commit={4a39564}
+}
+```
 
 ---
 
